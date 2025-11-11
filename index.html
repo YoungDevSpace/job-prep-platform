@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>길동이의 취업 준비 플랫폼</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>길동이의 취업 준비 플랫폼</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#resume" class="nav-link">자기소개서 작성</a></li>
+                <li><a href="#interview" class="nav-link">면접 연습</a></li>
+                <li><a href="#applications" class="nav-link">회사 지원 관리</a></li>
+                <li><a href="#chatbot" class="nav-link">취업 상담 챗봇</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 메인 콘텐츠 -->
+    <main>
+        <!-- 자기소개서 작성 섹션 -->
+        <section id="resume" class="section">
+            <div class="container">
+                <h2>자기소개서 작성</h2>
+                <p>효과적인 자기소개서를 작성하여 취업의 첫걸음을 시작하세요.</p>
+                <div class="resume-form-container">
+                    <form id="resumeForm" class="resume-form">
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="position">지원 직무</label>
+                            <input type="text" id="position" name="position" placeholder="예: 프론트엔드 개발자, 마케팅 전문가" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="content">자기소개 내용</label>
+                            <textarea id="content" name="content" rows="15" placeholder="자기소개서 내용을 작성해주세요.&#10;&#10;예시:&#10;1. 지원 동기&#10;2. 성장 과정&#10;3. 역량 및 경험&#10;4. 입사 후 포부" required></textarea>
+                            <div class="char-count">
+                                <span id="charCount">0</span> / 2000자
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" id="previewBtn" class="btn btn-secondary">미리보기</button>
+                            <button type="button" id="downloadBtn" class="btn btn-primary">PDF로 저장하기</button>
+                        </div>
+                    </form>
+                    
+                    <!-- 미리보기 영역 -->
+                    <div id="previewArea" class="preview-area" style="display: none;">
+                        <div class="preview-header">
+                            <h3>미리보기</h3>
+                            <button type="button" id="closePreview" class="close-btn">&times;</button>
+                        </div>
+                        <div id="previewContent" class="preview-content"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 면접 연습 섹션 -->
+        <section id="interview" class="section">
+            <div class="container">
+                <h2>면접 연습</h2>
+                <p>실전 면접을 대비하여 다양한 면접 질문으로 연습하세요.</p>
+                
+                <div class="interview-practice-container">
+                    <!-- 질문 입력 영역 -->
+                    <div class="interview-question-section">
+                        <label for="interviewQuestion" class="section-label">면접 질문 입력</label>
+                        <textarea 
+                            id="interviewQuestion" 
+                            class="interview-question-input" 
+                            placeholder="연습할 면접 질문을 입력하세요.&#10;&#10;예시:&#10;1. 자기소개를 해주세요.&#10;2. 지원 동기를 말씀해주세요.&#10;3. 본인의 강점과 약점은 무엇인가요?"
+                            rows="6"
+                        ></textarea>
+                    </div>
+
+                    <!-- 타이머 설정 및 컨트롤 -->
+                    <div class="timer-control-section">
+                        <div class="timer-settings">
+                            <label class="section-label">타이머 시간 선택</label>
+                            <div class="timer-options">
+                                <button class="timer-option" data-minutes="1" data-selected="false">
+                                    <span class="timer-option-time">1분</span>
+                                    <span class="timer-option-label">짧은 답변</span>
+                                </button>
+                                <button class="timer-option active" data-minutes="3" data-selected="true">
+                                    <span class="timer-option-time">3분</span>
+                                    <span class="timer-option-label">일반 답변</span>
+                                </button>
+                                <button class="timer-option" data-minutes="5" data-selected="false">
+                                    <span class="timer-option-time">5분</span>
+                                    <span class="timer-option-label">상세 답변</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 타이머 디스플레이 -->
+                        <div class="timer-display-section">
+                            <div class="timer-circle">
+                                <svg class="timer-svg" viewBox="0 0 200 200">
+                                    <circle 
+                                        class="timer-circle-bg" 
+                                        cx="100" 
+                                        cy="100" 
+                                        r="90"
+                                    ></circle>
+                                    <circle 
+                                        class="timer-circle-progress" 
+                                        cx="100" 
+                                        cy="100" 
+                                        r="90"
+                                        id="timerProgress"
+                                    ></circle>
+                                </svg>
+                                <div class="timer-text">
+                                    <div class="timer-time" id="timerTime">03:00</div>
+                                    <div class="timer-label" id="timerLabel">준비</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 컨트롤 버튼 -->
+                        <div class="timer-controls">
+                            <button id="startTimerBtn" class="btn btn-primary btn-large">
+                                <span class="btn-icon">▶</span>
+                                <span>시작</span>
+                            </button>
+                            <button id="pauseTimerBtn" class="btn btn-secondary btn-large" style="display: none;">
+                                <span class="btn-icon">⏸</span>
+                                <span>일시정지</span>
+                            </button>
+                            <button id="resetTimerBtn" class="btn btn-secondary btn-large">
+                                <span class="btn-icon">↻</span>
+                                <span>리셋</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 회사 지원 관리 섹션 -->
+        <section id="applications" class="section">
+            <div class="container">
+                <h2>회사 지원 관리</h2>
+                <p>지원한 회사와 일정을 체계적으로 관리하세요.</p>
+                
+                <!-- 타임라인 컨트롤 -->
+                <div class="timeline-controls">
+                    <button id="addApplicationBtn" class="btn btn-primary">
+                        <span>+</span> 지원 추가하기
+                    </button>
+                    <button id="exportDataBtn" class="btn btn-secondary">데이터 내보내기 (JSON)</button>
+                    <button id="importDataBtn" class="btn btn-secondary">데이터 가져오기 (JSON)</button>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                </div>
+
+                <!-- 타임라인 컨테이너 -->
+                <div id="timelineContainer" class="timeline-container">
+                    <div class="timeline-empty" id="timelineEmpty">
+                        <p>아직 지원한 회사가 없습니다.</p>
+                        <p>위의 "지원 추가하기" 버튼을 클릭하여 첫 지원을 추가해보세요!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 지원 추가/수정 모달 -->
+        <div id="applicationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">지원 추가하기</h3>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <form id="applicationForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="companyName">회사명 *</label>
+                        <input type="text" id="companyName" name="companyName" placeholder="예: 네이버, 카카오" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalPosition">지원 직무 *</label>
+                        <input type="text" id="modalPosition" name="modalPosition" placeholder="예: 프론트엔드 개발자" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="applicationDate">지원 날짜 *</label>
+                        <input type="date" id="applicationDate" name="applicationDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">지원 단계 *</label>
+                        <select id="status" name="status" required>
+                            <option value="서류 제출">서류 제출</option>
+                            <option value="서류 통과">서류 통과</option>
+                            <option value="면접 진행 중">면접 진행 중</option>
+                            <option value="최종 면접">최종 면접</option>
+                            <option value="합격">합격</option>
+                            <option value="불합격">불합격</option>
+                            <option value="대기 중">대기 중</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">메모</label>
+                        <textarea id="notes" name="notes" rows="4" placeholder="추가 정보나 메모를 입력하세요"></textarea>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 취업 상담 챗봇 섹션 -->
+        <section id="chatbot" class="section">
+            <div class="container">
+                <h2>취업 상담 챗봇</h2>
+                <p>길동이와 함께 취업 준비에 대한 궁금증을 해결해보세요.</p>
+                
+                <div class="chatbot-container">
+                    <div class="chatbot-header">
+                        <div class="chatbot-avatar">
+                            <span>🤖</span>
+                        </div>
+                        <div class="chatbot-info">
+                            <h3>길동이 취업 코치</h3>
+                            <p>온라인</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chatbot-messages" id="chatbotMessages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-text">
+                                    안녕하세요! 저는 길동이 취업 코치입니다. 취업 준비에 대해 궁금한 점이 있으시면 언제든지 물어보세요!
+                                </div>
+                                <div class="message-time">지금</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chatbot-input-area">
+                        <input 
+                            type="text" 
+                            id="chatbotInput" 
+                            class="chatbot-input" 
+                            placeholder="질문을 입력하세요..."
+                            autocomplete="off"
+                        >
+                        <button id="chatbotSendBtn" class="chatbot-send-btn">
+                            <span>전송</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 길동이의 취업 준비 플랫폼. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
