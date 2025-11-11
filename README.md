@@ -1,4 +1,4 @@
-# 길동이의 취업 준비 플랫폼
+# 취업 준비 플랫폼
 
 취업 준비를 위한 올인원 웹 애플리케이션입니다. 자기소개서 작성, 면접 연습, 지원 관리, 취업 상담 등 취업 준비에 필요한 모든 기능을 한 곳에서 제공합니다.
 
@@ -204,7 +204,7 @@ job-prep-platform/
 
 ## 👤 작성자
 
-- **길동이** - [GitHub](https://github.com/your-username)
+- **양소영** - [GitHub](https://github.com/YoungDevSpace)
 
 ## 🙏 감사의 말
 
@@ -219,4 +219,5 @@ job-prep-platform/
 ---
 
 ⭐ 이 프로젝트가 도움이 되었다면 Star를 눌러주세요!
+
 
